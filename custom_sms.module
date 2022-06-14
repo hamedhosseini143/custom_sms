@@ -21,7 +21,9 @@ function custom_sms_node_insert(NodeInterface $node){
     $tel = '';
     $message = '';
     $pattern = '';
-    sendMessage($tel, $message, $pattern);
+    for( $i = 0; $i < 4; $i++ ) {
+      sendMessage($tel, $message, $pattern);
+    }
   }
 }
 
