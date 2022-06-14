@@ -1,0 +1,44 @@
+<?php
+
+/**
+ * @file
+ * Primary module hooks for custom sms module.
+ *
+ * @DCG
+ * This file is no longer required in Drupal 8.
+ * @see https://www.drupal.org/node/2217931
+ */
+
+use Drupal\node\NodeInterface;
+
+/**
+ * @param \Drupal\node\NodeInterface $node
+ *
+ * @return void
+ */
+function custom_sms_node_insert(NodeInterface $node){
+  $tel = '';
+  $message = '';
+  $pattern = '';
+  sendMessage($tel, $message, $pattern);
+}
+
+/**
+ * @param $tel
+ * @param $message
+ * @param $pattern
+ *
+ * @return mixed
+ */
+function sendMessage($tel, $message, $pattern) {
+  $http = new \GuzzleHttp\Client;
+  $username = "";
+  $password = '';
+  $from = "";
+  $pattern_code = $pattern;
+  $to = [$tel];
+  $input_data = $message;
+  $url = "https://ippanel.com/patterns/pattern?username=" . $username . "&password=" . urlencode($password) . "&from=$from&to=" . json_encode($to) . "&input_data=" . urlencode(json_encode($input_data)) . "&pattern_code=$pattern_code";
+  $response =  $http->post($url);
+  return json_decode((string) $response->getBody(), TRUE);
+}
